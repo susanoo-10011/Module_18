@@ -39,7 +39,7 @@ namespace Task_18._4._2.Receiver
                 await Task.Run(async () => await youtube.Videos.Streams.DownloadAsync(streamInfo, filePath));
             }
 
-            Console.WriteLine("Скачивание завершено!");
+            Console.WriteLine("Скачивание завершено");
         }
 
         
