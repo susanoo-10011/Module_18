@@ -1,13 +1,5 @@
-﻿using AngleSharp;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using YoutubeExplode;
-using YoutubeExplode.Converter;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
@@ -16,32 +8,61 @@ namespace Task_18._4._2.Receiver
     internal class DownloadVideReceiver : IReceiver
     {
         string _url;
-        public DownloadVideReceiver(string url) 
+        public DownloadVideReceiver(string url)
         {
             _url = url;
         }
-        public async Task Operation()
+
+        public static string CheckingTheDirectory()
         {
-            Console.WriteLine("Ввведите путь сохранения видеоролика");
+            Console.WriteLine("Введите путь сохранения видеоролика\n");
             string path = Console.ReadLine();
-            Console.WriteLine("Скачивание начато");
 
-            var youtube = new YoutubeClient();
-            var video = await youtube.Videos.GetAsync(_url);
-            var streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
-            var streamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
-
-            if (streamInfo != null)
+            while(!Directory.Exists(path))
             {
-                var fileName = $"{video.Title}.{streamInfo.Container}";
-                var filePath = Path.Combine(path, fileName);
-
-                await Task.Run(async () => await youtube.Videos.Streams.DownloadAsync(streamInfo, filePath));
+                Console.WriteLine("\nУказанной директории не существует. Повторите попытку:  ");
+                path = Console.ReadLine();
             }
 
-            Console.WriteLine("Скачивание завершено");
+            return path;
         }
+        public async Task Operation()
+        {
+            try
+            {
+                var path = CheckingTheDirectory();
+                Console.WriteLine("\nСкачивание начато\n");
 
-        
+                var youtube = new YoutubeClient();
+                var video = await youtube.Videos.GetAsync(_url);
+                var streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
+                var streamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
+
+                if (streamInfo != null)
+                {
+                    var invalidChars = Path.GetInvalidFileNameChars();
+
+                    var fileName = new string(video.Title.Select(c => invalidChars.Contains(c) ? '_' : c).ToArray()); //заменяет недопустимые символы в названии файла на '_'. 
+                    var fileExtension = streamInfo.Container;
+
+                    fileName = $"{video.Title}.{streamInfo.Container}";
+                    var filePath = Path.Combine(path, fileName);
+
+                    await youtube.Videos.Streams.DownloadAsync(streamInfo, filePath);
+
+                    Console.WriteLine($"Видео сохранено по пути: {filePath}");
+                }
+                else
+                {
+                    Console.WriteLine("\nНе удалось получить информацию о потоке видео.");
+                }
+
+                Console.WriteLine("\nСкачивание завершено");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Произошла ошибка: {ex.Message}");
+            }
+        }
     }
 }
