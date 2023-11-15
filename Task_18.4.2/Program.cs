@@ -4,22 +4,22 @@ using Task_18._4._2.Commands;
 
 class Program
 {
-    static void  Main()
+    static async Task  Main()
     {
-        var videoUrl = "https://youtu.be/O_Bwo2X4glo?si=SYgRTpFrYgShLy57";
-        var puth = "C:\\Users\\Egor\\Desktop\\videooo";
+        Console.Write("Вставьте ссылку на видео: ");
+        var videoUrl = Console.ReadLine();
 
         Sender sender = new Sender();
 
         IReceiver getDescription = new GetDescriptionReceiver(videoUrl);
-        sender.SetCommand(new GetDescriptionCommand(getDescription, videoUrl, puth));
-        sender.Run();
+        sender.SetCommand(new GetDescriptionCommand(getDescription));
+        await sender.Run();
 
         Console.WriteLine();
 
         IReceiver download = new DownloadVideReceiver(videoUrl);
-        sender.SetCommand(new DownloadVideoCommand(download, videoUrl, puth));
-        sender.Run();
+         sender.SetCommand(new DownloadVideoCommand(download));
+        await sender.Run();
 
     }
 }

@@ -10,14 +10,14 @@ namespace Task_18._4._2
     internal class Sender
     {
         Command _command;
-        public void SetCommand(Command command)
+        public async void SetCommand(Command command)
         {
             _command = command;
         }
 
-        public void Run()
+        public async Task Run()
         {
-            _command.Run();
+            await _command.Run();
         }
         
     }

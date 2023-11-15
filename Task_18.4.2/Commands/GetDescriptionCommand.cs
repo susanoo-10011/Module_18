@@ -10,15 +10,13 @@ namespace Task_18._4._2.Commands
     internal class GetDescriptionCommand : Command
     {
         IReceiver _getDescription;
-        string _videoUrl;
-        string _outputFilePath;
-        public GetDescriptionCommand(IReceiver getDescription, string videoUrl, string outputFilePath)
+        
+        public GetDescriptionCommand(IReceiver getDescription)
         {
             _getDescription = getDescription;
-            _videoUrl = videoUrl;
-            _outputFilePath = outputFilePath;
+            
         }
-        public async override void Run()
+        public async override Task Run()
         {
             await _getDescription.Operation();
         }

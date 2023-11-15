@@ -10,15 +10,13 @@ namespace Task_18._4._2.Commands
     internal class DownloadVideoCommand : Command
     {
         IReceiver _downloadVideo;
-        string _videoUrl;
-        string _outputFilePath;
-        public DownloadVideoCommand(IReceiver downloadVideo, string videoUrl, string outputFilePath) 
+       
+        public DownloadVideoCommand(IReceiver downloadVideo) 
         {
             _downloadVideo = downloadVideo;
-            _videoUrl = videoUrl;
-            _outputFilePath = outputFilePath;
+            
         }
-        public async override void Run()
+        public async override Task Run()
         {
             await _downloadVideo.Operation();
         }

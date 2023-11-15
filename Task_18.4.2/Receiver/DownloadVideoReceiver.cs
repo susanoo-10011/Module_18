@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YoutubeExplode;
 using YoutubeExplode.Converter;
+using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 namespace Task_18._4._2.Receiver
@@ -35,7 +36,7 @@ namespace Task_18._4._2.Receiver
                 var fileName = $"{video.Title}.{streamInfo.Container}";
                 var filePath = Path.Combine(path, fileName);
 
-                await youtube.Videos.Streams.DownloadAsync(streamInfo, filePath);
+                await Task.Run(async () => await youtube.Videos.Streams.DownloadAsync(streamInfo, filePath));
             }
 
             Console.WriteLine("Скачивание завершено!");
