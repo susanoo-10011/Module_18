@@ -15,7 +15,7 @@ namespace Task_18._4._2.Receiver
 
         public static string CheckingTheDirectory()
         {
-            Console.WriteLine("Введите путь сохранения видеоролика\n");
+            Console.WriteLine("Введите путь сохранения видеоролика:");
             string path = Console.ReadLine();
 
             while(!Directory.Exists(path))
@@ -45,7 +45,7 @@ namespace Task_18._4._2.Receiver
                     var fileName = new string(video.Title.Select(c => invalidChars.Contains(c) ? '_' : c).ToArray()); //заменяет недопустимые символы в названии файла на '_'. 
                     var fileExtension = streamInfo.Container;
 
-                    fileName = $"{video.Title}.{streamInfo.Container}";
+                    fileName = $"{fileName}.{streamInfo.Container}";
                     var filePath = Path.Combine(path, fileName);
 
                     await youtube.Videos.Streams.DownloadAsync(streamInfo, filePath);
