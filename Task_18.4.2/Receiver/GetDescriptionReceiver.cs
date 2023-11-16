@@ -13,7 +13,7 @@ namespace Task_18._4._2.Receiver
         {
             YoutubeClient youtube = new YoutubeClient();
 
-            Console.WriteLine("Описание видео:\n");
+            Console.WriteLine("\nОписание видео:\n");
             var video = youtube.Videos.GetAsync(_url).Result;
             var title = video.Title;
             var author = video.Author;

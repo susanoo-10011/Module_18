@@ -13,7 +13,7 @@ namespace Task_18._4._2.Receiver
             _url = url;
         }
 
-        public static string CheckingTheDirectory()
+        public static string CheckingTheDirectory() // проверка существования директории
         {
             Console.WriteLine("Введите путь сохранения видеоролика:");
             string path = Console.ReadLine();
